@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Refrigerator Display</title>
+    <style>
+        .monitor-frame {
+            width: 500px;
+            height: 500px;
+            border: 5px solid black;
+            position: relative;
+            overflow: hidden;
+            background-color: #aed581; 
+            font-family: 'Arial', sans-serif; 
+        }
+        .display-screen {
+            width: 100%;
+            height: 100%;
+            background-color: #a6d8a0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            padding: 20px;
+            box-sizing: border-box;
+            border-radius: 10px;
+        }
+        .on-off-buttons {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        .clock {
+            font-size: 24px;
+            margin-top: 20px;
+            color: #333333;
+        }
+        .tv{
+            position: absolute;
+            top: 100px;
+            right: 10px;
+        }
+        .browser {
+            margin-top: 20px;
+            color: #555555;
+            position: absolute;
+            top: 280px;
+            right: 30px;
+        }
+        .inside-fridge{
+            position: absolute;
+            top: 130px;
+            left: 50px;
+        }
+        .temperature,
+        .display-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        /* Button styles */
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="monitor-frame">
+        <div class="display-screen">
+            <div class="on-off-buttons">
+                <button onclick="clearDisplay()">Off</button>
+                <button onclick="turnOnDisplay()">On</button>
+            </div>
+            <div class="clock" id="clock"></div>
+            <div class="temperature">
+                <div class="display-title">Temperature:</div>
+                <span id="temperature">20 Degrees F</span>
+            </div>
+            <div class="inside-fridge">
+                <div class="display-title"></div>
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7zjTCsz2d_lBNmTREXDvw1uoEAprLndTmRQ&usqp=CAU">
+            </div>
+            <div  class="tv">
+                <div class="display-title"></div>
+                <img width="200" height="200" src="https://www.freeiconspng.com/thumbs/television-icon/tv-icon-13.png">
+            </div>
+            <div class="browser">
+                <div class="display-title"></div>
+                <img width="180" height="180" src="https://cdn.iconscout.com/icon/free/png-256/free-browser-1753395-1499362.png">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateClock() {
+            var now = new Date();
+            var hours = now.getHours();
+            var minutes = now.getMinutes();
+            var seconds = now.getSeconds();
+            var formattedTime = hours + ':' + (minutes < 10 ? '0' : '') + minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+            document.getElementById('clock').innerText = formattedTime;
+            setTimeout(updateClock, 1000); }
+
+        function clearDisplay() {
+            document.querySelectorAll('.temperature, .inside-fridge, .tv, .browser').forEach(function(element) {
+                element.style.display = 'none';
+            });
+        }
+
+        function turnOnDisplay() {
+            document.querySelectorAll('.temperature, .inside-fridge, .tv, .browser').forEach(function(element) {
+                element.style.display = 'block';
+            });
+        }
+        updateClock();
+    </script>
+</body>
+</html>
