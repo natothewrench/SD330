@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parking Lot Details</title>
+    <style>
+        body {
+            background-color: white;
+            color: red;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background-color: red;
+            overflow: hidden;
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+
+        .lotso {
+            padding: 20px;
+        }
+        
+        .button {
+            display: inline-block;
+            background-color: red;
+            color: white;
+            padding: 20px 40px;
+            font-size: 24px;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #c70000;
+        }
+        .lot-name {
+            font-size: 18px;
+        }
+        .lotDetails {
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            line-height: 300%;
+            font-size: 20px;
+        }
+        
+        
+
+    </style>
+</head>
+
+<body onload="loadParkingLotDetails()">
+    <div class="navbar">
+        <div class="navbar">
+            <a href="https://natothewrench.github.io/SD330//parking.html">Home</a>
+            <a href="https://natothewrench.github.io/SD330//404.html">Log in</a>
+            <a href="https://natothewrench.github.io/SD330//404.html">Contact Us</a>
+            <a href="https://natothewrench.github.io/SD330//404.html">My Profile</a>
+            <a href="https://natothewrench.github.io/SD330//404.html">Help</a>
+        </div>
+    
+    </div>
+
+
+    <main>
+        <h1>Parking Lot Details</h1>
+        <div class= "lotDetails" id="lotDetails"></div>
+    </main>
+
+    <script>
+        function loadParkingLotDetails() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const lotName = urlParams.get('name');
+            let Keyname = ""
+            if (lotName) {
+                fetch("https://natothewrench.github.io/SD330//parking.json")
+                    .then(response => response.json())
+                    .then(data => {
+                        const parkingLot = data.parkingLots.find(lot => lot.name === lotName);
+                        if (parkingLot) {
+                            const lotDetailsDiv = document.getElementById('lotDetails');
+                            const detailsList = document.createElement('ul');
+
+                            // Display parking lot details
+                            Object.entries(parkingLot).forEach(([key, value]) => {
+                                const listItem = document.createElement('li');
+                                //big switch for keys naming
+                                let Keyname = ""
+                                switch(key){
+                                    case "name": 
+                                        Keyname = "Name"
+                                        break;
+                                    case "type":
+                                        Keyname = "Allowed Parkers"
+                                        break;
+                                    case "totalSpots":
+                                        Keyname = "Total spots in the lot"
+                                        break;
+                                    case "openSpots":
+                                        Keyname = "Total spots open in the lot"
+                                        break;
+                                    case "percentageOpen":
+                                        Keyname = "Percent of spaces unoccupied"
+                                }
+                                listItem.textContent = `${Keyname}: ${value}`;
+                                detailsList.appendChild(listItem);
+                            });
+
+                            lotDetailsDiv.appendChild(detailsList);
+                        } else {
+                            alert('Parking lot not found.');
+                        }
+                    })
+                    .catch(error => console.error('Error fetching data:', error));
+            } else {
+                alert('No parking lot specified.');
+            }
+        }
+    </script>
+</body>
+
+</html>
